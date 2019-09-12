@@ -39,7 +39,12 @@ main = hspec $ do
 
   describe "fibs3" $ do
     it "should return the correct fibonacci sequence" $ do
-      (take 20 . streamToList $ fibs3) `shouldBe` (take 20 fibs2)
+      (take 10 . streamToList $ fibs3) `shouldBe` (take 10 fibs2)
+
+  describe "fib4" $ do
+    it "should return the correct fibonacci number" $ property $
+      forAll (choose (0, 10000))
+        (\n -> (fib4 . fromIntegral $ n) == (fibs2 !! n))
 
 isFibonacciSequence :: [Integer] -> Bool
 isFibonacciSequence [] = True

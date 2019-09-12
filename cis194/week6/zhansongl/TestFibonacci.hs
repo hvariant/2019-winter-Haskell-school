@@ -37,6 +37,10 @@ main = hspec $ do
         (\n -> let r = (streamToList ruler !! n)
                 in ((n+1) `rem` (2^r)) == 0 && ((n+1) `rem` (2^(r+1))) /= 0)
 
+  describe "fibs3" $ do
+    it "should return the correct fibonacci sequence" $ do
+      (take 20 . streamToList $ fibs3) `shouldBe` (take 20 fibs2)
+
 isFibonacciSequence :: [Integer] -> Bool
 isFibonacciSequence [] = True
 isFibonacciSequence [x] = True

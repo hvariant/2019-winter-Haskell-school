@@ -1,3 +1,6 @@
+{-# LANGUAGE FlexibleInstances #-}
+{-# OPTIONS_GHC -fno-warn-missing-methods #-}
+
 module Fibonacci where
 
 fib :: Integer -> Integer
@@ -37,4 +40,20 @@ ruler = streamMap (maxPower 0) . streamMap (+1) $ nats
   where maxPower r n
           | n `rem` (2^(r+1)) /= 0 = r
           | otherwise = maxPower (r+1) n
+
+x :: Stream Integer
+x = Cons 0 . Cons 1 $ streamRepeat 0
+
+instance Num (Stream Integer) where
+  fromInteger n = Cons n . streamRepeat $ 0
+  negate = streamMap negate -- this is not recursion!!!
+  (+) (Cons a0 a') (Cons b0 b') = Cons (a0 + b0) (a' + b')
+  (*) (Cons a0 a') b@(Cons b0 b') = Cons (a0 * b0) (fromIntegral a0 * b' + a' * b)
+
+instance Fractional (Stream Integer) where
+  (/) (Cons a0 a') (Cons b0 b') = q
+    where q = Cons (a0 `div` b0) (fromIntegral (1 `div` b0) * (a' - q * b'))
+
+fibs3 :: Stream Integer
+fibs3 = x / (1 - x - x * x)
 

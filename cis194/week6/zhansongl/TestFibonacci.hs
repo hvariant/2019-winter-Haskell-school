@@ -26,6 +26,17 @@ main = hspec $ do
         (\x -> let n = getSmall x
                 in isFibonacciSequence $ take n fibs2)
 
+  describe "nats" $ do
+    it "should return i at index i" $ do
+      forAll (choose (0, 10000))
+        (\n -> (streamToList nats !! fromIntegral n) == n)
+
+  describe "ruler" $ do
+    it "should the correct result at index i" $ do
+      forAll (choose (0, 1000))
+        (\n -> let r = (streamToList ruler !! n)
+                in ((n+1) `rem` (2^r)) == 0 && ((n+1) `rem` (2^(r+1))) /= 0)
+
 isFibonacciSequence :: [Integer] -> Bool
 isFibonacciSequence [] = True
 isFibonacciSequence [x] = True

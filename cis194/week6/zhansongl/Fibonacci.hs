@@ -36,11 +36,11 @@ streamFromSeed f s = Cons s (streamFromSeed f (f s))
 nats :: Stream Integer
 nats = streamFromSeed (+1) 0
 
+interleaveStreams :: Stream a -> Stream a -> Stream a
+interleaveStreams (Cons a as) bs = Cons a . interleaveStreams bs $ as
+
 ruler :: Stream Integer
-ruler = streamMap (maxPower 0) . streamMap (+1) $ nats
-  where maxPower r n
-          | n `rem` (2^(r+1)) /= 0 = r
-          | otherwise = maxPower (r+1) n
+ruler = interleaveStreams (streamRepeat 0) (streamMap (+1) ruler)
 
 x :: Stream Integer
 x = Cons 0 . Cons 1 $ streamRepeat 0

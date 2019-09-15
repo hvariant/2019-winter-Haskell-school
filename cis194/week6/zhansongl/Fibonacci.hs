@@ -47,7 +47,7 @@ x = Cons 0 . Cons 1 $ streamRepeat 0
 
 instance Num (Stream Integer) where
   fromInteger n = Cons n . streamRepeat $ 0
-  negate = streamMap negate -- this is not recursion!!!
+  negate = streamMap Prelude.negate
   (+) (Cons a0 a') (Cons b0 b') = Cons (a0 + b0) (a' + b')
   (*) (Cons a0 a') b@(Cons b0 b') = Cons (a0 * b0) (fromIntegral a0 * b' + a' * b)
 

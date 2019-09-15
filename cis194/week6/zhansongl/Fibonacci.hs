@@ -58,15 +58,15 @@ instance Fractional (Stream Integer) where
 fibs3 :: Stream Integer
 fibs3 = x / (1 - x - x * x)
 
-data Matrix = Mat4 Integer Integer Integer Integer deriving (Show, Eq)
+data Matrix = Matrix Integer Integer Integer Integer deriving (Show, Eq)
 
 instance Num Matrix where
-  (*) (Mat4 a11 a12 a21 a22) (Mat4 b11 b12 b21 b22) =
-      (Mat4 (a11 * b11 + a12 * b21) (a11 * b12 + a12 * b22)
+  (*) (Matrix a11 a12 a21 a22) (Matrix b11 b12 b21 b22) =
+      (Matrix (a11 * b11 + a12 * b21) (a11 * b12 + a12 * b22)
             (a21 * b11 + a22 * b21) (a21 * b12 + a22 * b22))
 
 fib4 :: Integer -> Integer
 fib4 0 = 0
-fib4 n = get12 $ (Mat4 1 1 1 0)^n
-  where get12 (Mat4 _ a _ _) = a
+fib4 n = get12 $ (Matrix 1 1 1 0)^n
+  where get12 (Matrix _ a _ _) = a
 

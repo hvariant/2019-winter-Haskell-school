@@ -1,7 +1,7 @@
 import Risk
 
 import Control.Monad.Trans.Random.Lazy (evalRand)
-import System.Random (mkStdGen, RandomGen(..))
+import System.Random (mkStdGen)
 
 import Test.Hspec
 
@@ -17,3 +17,8 @@ main = hspec $ do
       it "should produce the correct outcome given enough attackers and defenders" $ do
         (battleOutcome (Battlefield 3 5) (fmap DV [3,5]) (fmap DV [4,3])) `shouldBe` (Battlefield 2 4)
         (battleOutcome (Battlefield 12 12) (fmap DV [1,4,2]) (fmap DV [3,5])) `shouldBe` (Battlefield 10 12)
+
+  describe "invade" $ do
+    it "should battle until either army is depleted" $ do
+      invade (Battlefield 100 101) `evalRand` mkStdGen 42
+      `shouldSatisfy` \(Battlefield a d) -> a <= 1 || d <= 0

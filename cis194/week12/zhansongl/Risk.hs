@@ -3,11 +3,13 @@
 
 module Risk where
 
+import Control.Monad (replicateM)
+import Control.Monad.Loops (iterateUntilM)
 import Data.List (sortBy)
 --import Debug.Trace (trace)
-
-import Control.Monad (replicateM)
 import System.Random (StdGen)
+
+-- monadrandom
 import Control.Monad.Random (MonadRandom(..), Random(..), Rand)
 
 ------------------------------------------------------------
@@ -50,3 +52,7 @@ battle field
                 pure $ battleOutcome field attackRolls defendRolls
       where attackArmy = min 3 (attackers field - 1)
             defendArmy = min 2 (defenders field)
+
+invade :: Battlefield -> Rand StdGen Battlefield
+invade = iterateUntilM battleOver battle
+  where battleOver (Battlefield a d) = a <= 1 || d <= 0

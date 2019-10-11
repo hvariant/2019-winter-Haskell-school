@@ -4,13 +4,14 @@
 module Risk where
 
 import Control.Monad (replicateM)
-import Control.Monad.Loops (iterateUntilM)
 import Data.List (sortBy)
 --import Debug.Trace (trace)
 import System.Random (StdGen)
 
 -- monadrandom
 import Control.Monad.Random (MonadRandom(..), Random(..), Rand)
+-- monad-loops
+import Control.Monad.Loops (iterateUntilM)
 
 ------------------------------------------------------------
 -- Die values
@@ -56,3 +57,9 @@ battle field
 invade :: Battlefield -> Rand StdGen Battlefield
 invade = iterateUntilM battleOver battle
   where battleOver (Battlefield a d) = a <= 2 || d <= 0
+
+successProb :: Battlefield -> Rand StdGen Double
+successProb b = (/) <$> (fromIntegral <$> successCount) <*> pure 1000
+  where rs = replicateM 1000 . invade $ b
+        successCount = (length . filter winning) <$> rs
+        winning (Battlefield a _) = a > 2

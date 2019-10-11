@@ -55,4 +55,4 @@ battle field
 
 invade :: Battlefield -> Rand StdGen Battlefield
 invade = iterateUntilM battleOver battle
-  where battleOver (Battlefield a d) = a <= 1 || d <= 0
+  where battleOver (Battlefield a d) = a <= 2 || d <= 0

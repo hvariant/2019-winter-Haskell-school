@@ -21,4 +21,4 @@ main = hspec $ do
   describe "invade" $ do
     it "should battle until either army is depleted" $ do
       (invade (Battlefield 100 10) `evalRand` mkStdGen 42) `shouldSatisfy` \(Battlefield a d) -> d <= 0
-      (invade (Battlefield 300 10000) `evalRand` mkStdGen 42) `shouldSatisfy` \(Battlefield a d) -> a <= 2
+      (invade (Battlefield 300 10000) `evalRand` mkStdGen 42) `shouldSatisfy` \(Battlefield a d) -> a <= 1

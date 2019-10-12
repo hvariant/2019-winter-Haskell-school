@@ -56,13 +56,13 @@ battle field
 
 invade :: Battlefield -> Rand StdGen Battlefield
 invade = iterateUntilM battleOver battle
-  where battleOver (Battlefield a d) = a <= 2 || d <= 0
+  where battleOver (Battlefield a d) = a <= 1 || d <= 0
 
 successProb :: Battlefield -> Rand StdGen Double
 successProb b = (/) <$> (fromIntegral <$> successCount) <*> pure 10000
   where rs = replicateM 10000 . invade $ b
         successCount = (length . filter winning) <$> rs
-        winning (Battlefield a _) = a > 2
+        winning (Battlefield a _) = a > 1
 
 cartProd :: [m a] -> [m a] -> [(m a, m a)]
 cartProd o1 o2 = [(x,y) | x <- o1, y <- o2]
@@ -86,7 +86,7 @@ outcomeProb a d = zipWith p (fmap head . group $ r) (fmap length . group $ r)
 
 exactSuccessProb :: Battlefield -> Double
 exactSuccessProb (Battlefield a d)
-  | a <= 2 = 0
+  | a <= 1 = 0
   | d <= 0 = 1
   | otherwise = sum
               . fmap (\(aloss, dloss, prob)
